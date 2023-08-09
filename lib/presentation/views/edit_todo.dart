@@ -6,8 +6,10 @@ import 'package:todo_app/domain/models/todo_model.dart';
 class EditScreen extends StatefulWidget {
   final Todo todo;
 
-  const EditScreen({Key? key, required this.todo, })
-      : super(key: key);
+  const EditScreen({
+    Key? key,
+    required this.todo,
+  }) : super(key: key);
 
   @override
   State<EditScreen> createState() => _EditScreenState();
@@ -15,32 +17,23 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
   late final TextEditingController controllerTitle;
-  late final TextEditingController controllerDescription;
-  late final TextEditingController controllerImage;
 
   void addData() async {
     final title = controllerTitle.value.text.trim();
-    final description = controllerDescription.value.text.trim();
-    final imageUrl = controllerImage.value.text.trim();
 
     await repository.storeTodo(Todo(
-        id: widget.todo.id,
-        title: title,
-        description: description,
-        imageUrl: imageUrl));
-
+      id: widget.todo.id,
+      title: title,
+    ));
 
     repository.deleteTodo(widget.todo);
 
-
-    Navigator.of(context).pop("d");
+    Navigator.of(context).pop();
   }
 
   void getOldUser() {
     controllerTitle = TextEditingController(text: widget.todo.title);
-    controllerDescription =
-        TextEditingController(text: widget.todo.description);
-    controllerImage = TextEditingController(text: widget.todo.imageUrl);
+
     setState(() {});
   }
 
@@ -57,8 +50,9 @@ class _EditScreenState extends State<EditScreen> {
         actions: [
           TextButton(
             onPressed: addData,
-            child: const Text("Save"),
+            child: const Text("Save",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
           ),
+          const SizedBox(width: 20,)
         ],
       ),
       body: Padding(
@@ -66,26 +60,11 @@ class _EditScreenState extends State<EditScreen> {
         child: Column(
           children: [
             TextField(
+              autofocus: true,
               controller: controllerTitle,
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
                 hintText: "title",
-              ),
-            ),
-            const SizedBox(height: 30),
-            TextField(
-              controller: controllerDescription,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: "description",
-              ),
-            ),
-            const SizedBox(height: 30),
-            TextField(
-              controller: controllerImage,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                hintText: "Image url",
               ),
             ),
           ],
